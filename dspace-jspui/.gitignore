@@ -1,0 +1,11 @@
+# Ignore build folders (they're huge and regenerated every time)
+**/target/
+**/build/
+
+# Ignore logs
+*.log
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
+*.iml
