@@ -5,7 +5,7 @@ ENV CATALINA_HOME=/usr/local/tomcat
 ENV DSPACE_HOME=/dspace
 
 RUN apt-get update && apt-get install -y curl && \
-    curl -L -o $CATALINA_HOME/webapps/jspui.war ""
+    curl -L -o $CATALINA_HOME/webapps/jspui.war "https://drive.google.com/uc?export=download&id=1kioRFz730b7kgGuycvTIwqb9syAjSLKf"
 
 EXPOSE 8080
 
