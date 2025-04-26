@@ -15,10 +15,12 @@ RUN sed -i 's/unpackWARs="true"/unpackWARs="false"/' $CATALINA_HOME/conf/server.
 # Allow Tomcat to listen externally (not just on localhost)
 RUN sed -i 's/address="127.0.0.1"/address="0.0.0.0"/' $CATALINA_HOME/conf/server.xml || true
 
-# ✅ DO NOT modify the connector port to ${PORT} — this caused the error
+# Ensure Tomcat listens on port 8080
+RUN sed -i 's/port="8080"/address="0.0.0.0" port="8080"/' $CATALINA_HOME/conf/server.xml
 
 # Expose default Tomcat port
 EXPOSE 8080
+
 
 
 
