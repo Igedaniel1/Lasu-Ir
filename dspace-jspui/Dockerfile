@@ -7,8 +7,11 @@ ENV FILE_NAME=ROOT.war
 RUN apt-get update && apt-get install -y wget && \
     wget -O $CATALINA_HOME/webapps/$FILE_NAME "$FILE_URL"
 
-# Disable WAR unpacking to avoid write errors
+# Fix 1: Stop Tomcat from trying to unpack the WAR (read-only FS)
 RUN sed -i 's/unpackWARs="true"/unpackWARs="false"/' $CATALINA_HOME/conf/server.xml
+
+# Fix 2: Bind Tomcat to 0.0.0.0, not localhost
+RUN sed -i 's/address="127.0.0.1"/address="0.0.0.0"/' $CATALINA_HOME/conf/server.xml || true
 
 EXPOSE 8080
 
