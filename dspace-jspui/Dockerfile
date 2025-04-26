@@ -9,14 +9,16 @@ ENV FILE_NAME=ROOT.war
 RUN apt-get update && apt-get install -y wget && \
     wget -O $CATALINA_HOME/webapps/$FILE_NAME "$FILE_URL"
 
-# ✅ DO NOT disable unpackWARs — we need the unpacked ROOT folder to inject our test file
-# RUN sed -i 's/unpackWARs="true"/unpackWARs="false"/' $CATALINA_HOME/conf/server.xml
-
 # Allow Tomcat to bind externally (instead of localhost)
 RUN sed -i 's/address="127.0.0.1"/address="0.0.0.0"/' $CATALINA_HOME/conf/server.xml || true
 
-# ✅ Add a simple index.jsp to confirm the root URL responds
-RUN echo '<html><body><h1>Hello from test index.jsp</h1></body></html>' > $CATALINA_HOME/webapps/ROOT/index.jsp
+# ✅ Create test index.jsp in a temp folder
+RUN mkdir -p /tmp/lasu-test && \
+    echo '<html><body><h1>Hello from test index.jsp</h1></body></html>' > /tmp/lasu-test/index.jsp
+
+# ✅ Replace the default entrypoint to move the test file after unpacking
+CMD cp /tmp/lasu-test/index.jsp $CATALINA_HOME/webapps/ROOT/index.jsp && \
+    catalina.sh run
 
 # Expose default Tomcat port
 EXPOSE 8080
