@@ -7,8 +7,13 @@ ENV FILE_NAME=jspui.war
 RUN apt-get update && apt-get install -y wget && \
     wget -O $CATALINA_HOME/webapps/${FILE_NAME} "$FILE_URL"
 
+# Debug line
+RUN ls -l / && ls -l $CATALINA_HOME
+
+# This line will fail if context.xml is missing
 COPY context.xml $CATALINA_HOME/conf/context.xml
 
 EXPOSE 8080
+
 
 
