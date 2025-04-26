@@ -9,17 +9,17 @@ ENV FILE_NAME=ROOT.war
 RUN apt-get update && apt-get install -y wget && \
     wget -O $CATALINA_HOME/webapps/$FILE_NAME "$FILE_URL"
 
-# Stop Tomcat from trying to unpack the WAR file (read-only file system)
+# Stop Tomcat from trying to unpack the WAR file (optional, for read-only)
 RUN sed -i 's/unpackWARs="true"/unpackWARs="false"/' $CATALINA_HOME/conf/server.xml
 
-# Ensure Tomcat binds to 0.0.0.0 instead of localhost (for external access)
+# Allow Tomcat to listen externally (not just on localhost)
 RUN sed -i 's/address="127.0.0.1"/address="0.0.0.0"/' $CATALINA_HOME/conf/server.xml || true
 
-# Ensure Tomcat listens on the correct port dynamically (using the PORT environment variable)
-RUN sed -i 's/<Connector port="8080"/<Connector port="${PORT}"/' $CATALINA_HOME/conf/server.xml
+# ✅ DO NOT modify the connector port to ${PORT} — this caused the error
 
-# Expose the dynamic port
-EXPOSE $PORT
+# Expose default Tomcat port
+EXPOSE 8080
+
 
 
 
