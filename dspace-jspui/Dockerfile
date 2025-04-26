@@ -12,16 +12,20 @@ RUN apt-get update && apt-get install -y wget && \
 # Allow Tomcat to bind externally (instead of localhost)
 RUN sed -i 's/address="127.0.0.1"/address="0.0.0.0"/' $CATALINA_HOME/conf/server.xml || true
 
-# ✅ Create a safe test file in a persistent location
+# Create a safe test file in a persistent location
 RUN mkdir -p $CATALINA_HOME/test-assets && \
     echo '<html><body><h1>Hello from test index.jsp</h1></body></html>' > $CATALINA_HOME/test-assets/index.jsp
 
-# ✅ At runtime, move the test file to ROOT folder after unpacking
-CMD cp $CATALINA_HOME/test-assets/index.jsp $CATALINA_HOME/webapps/ROOT/index.jsp && \
-    catalina.sh run
+# Add the custom start script
+COPY start.sh /usr/local/tomcat/start.sh
+RUN chmod +x /usr/local/tomcat/start.sh
 
 # Expose default Tomcat port
 EXPOSE 8080
+
+# Use custom start script to ensure Tomcat runs and then copy the test file
+CMD ["/usr/local/tomcat/start.sh"]
+
 
 
 
