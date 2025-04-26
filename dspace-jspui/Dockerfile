@@ -1,15 +1,23 @@
+# Stage 1: Build the WAR using Maven
+FROM maven:3.8.5-jdk-8 AS builder
+
+WORKDIR /app
+
+# Copy all project files into the build container
+COPY . .
+
+# Build the WAR file using Maven
+RUN mvn clean package
+
+# Stage 2: Run it on Tomcat
 FROM tomcat:9-jdk8
 
-# Set environment variables
 ENV CATALINA_HOME=/usr/local/tomcat
 ENV DSPACE_HOME=/dspace
 
-# Copy WAR file into the container
-COPY build-artifacts/lasu.war $CATALINA_HOME/webapps/jspui.war
+# Copy the generated WAR file into Tomcat as jspui.war
+COPY --from=builder /app/target/*.war $CATALINA_HOME/webapps/jspui.war
 
-
-# Expose port 8080
 EXPOSE 8080
 
-# Start Tomcat server
 CMD ["catalina.sh", "run"]
