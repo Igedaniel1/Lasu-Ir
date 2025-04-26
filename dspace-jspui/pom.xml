@@ -1,4 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.dspace</groupId>
    <artifactId>dspace-jspui</artifactId>
@@ -6,10 +9,7 @@
    <packaging>war</packaging>
    <description>DSpace JSP Based Webapplication</description>
 
-   <!-- 
-      A Parent POM that Maven inherits DSpace Default 
-      POM attributes from. 
-   -->
+   <!-- Parent POM -->
    <parent>
       <groupId>org.dspace</groupId>
       <artifactId>dspace-parent</artifactId>
@@ -18,9 +18,20 @@
    </parent>
 
     <properties>
-        <!-- This is the path to the root [dspace-src] directory. -->
         <root.basedir>${basedir}/..</root.basedir>
     </properties>
+
+    <!-- Repositories section (added HTTPS URLs) -->
+    <repositories>
+        <repository>
+            <id>maven-restlet</id>
+            <url>https://maven.restlet.org</url> <!-- Use HTTPS -->
+        </repository>
+        <repository>
+            <id>apache.snapshots</id>
+            <url>https://repository.apache.org/snapshots</url> <!-- Use HTTPS -->
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
@@ -29,10 +40,8 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <attachClasses>true</attachClasses>
-                    <!-- In version 2.1-alpha-1, this was incorrectly named warSourceExcludes -->
                     <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
                     <warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
-                    <!-- Filter the web.xml (needed for IDE compatibility/debugging) -->
                     <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
                 </configuration>
                 <executions>
@@ -45,7 +54,6 @@
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
-                    <!--Exclude license check for JSPUI files which don't need it-->
                     <excludes>
                         <exclude>**/META-INF/**</exclude>
                         <exclude>**/fmt.tld</exclude>
@@ -81,6 +89,7 @@
     </profiles>
 
     <dependencies>
+        <!-- Your existing dependencies (no change here) -->
         <dependency>
             <groupId>org.dspace</groupId>
             <artifactId>dspace-api</artifactId>
@@ -128,11 +137,10 @@
             <artifactId>commons-fileupload</artifactId>
             <type>jar</type>
         </dependency>
-		<dependency>
-    		<groupId>org.mcavallo</groupId>
-    		<artifactId>opencloud</artifactId>
-    		<version>0.3</version>
-		</dependency>
+        <dependency>
+            <groupId>org.mcavallo</groupId>
+            <artifactId>opencloud</artifactId>
+            <version>0.3</version>
+        </dependency>
     </dependencies>
-
 </project>
