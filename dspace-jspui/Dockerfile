@@ -16,11 +16,12 @@ RUN sed -i 's/unpackWARs="true"/unpackWARs="false"/' $CATALINA_HOME/conf/server.
 # Ensure Tomcat binds to 0.0.0.0 instead of localhost
 RUN sed -i 's/address="127.0.0.1"/address="0.0.0.0"/' $CATALINA_HOME/conf/server.xml || true
 
-# Ensure Tomcat is listening on the correct port (explicit configuration)
-RUN sed -i 's/<Connector port="8080"/<Connector port="8080" address="0.0.0.0"/' $CATALINA_HOME/conf/server.xml
+# Ensure Tomcat is listening on the correct port dynamically (using the PORT environment variable)
+RUN sed -i 's/<Connector port="8080"/<Connector port="${PORT}"/' $CATALINA_HOME/conf/server.xml
 
-# Expose the port
-EXPOSE 8080
+# Expose the dynamic port
+EXPOSE $PORT
+
 
 
 
