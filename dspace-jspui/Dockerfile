@@ -12,16 +12,17 @@ RUN apt-get update && apt-get install -y wget && \
 # Allow Tomcat to bind externally (instead of localhost)
 RUN sed -i 's/address="127.0.0.1"/address="0.0.0.0"/' $CATALINA_HOME/conf/server.xml || true
 
-# ✅ Create test index.jsp in a temp folder
-RUN mkdir -p /tmp/lasu-test && \
-    echo '<html><body><h1>Hello from test index.jsp</h1></body></html>' > /tmp/lasu-test/index.jsp
+# ✅ Create a safe test file in a persistent location
+RUN mkdir -p $CATALINA_HOME/test-assets && \
+    echo '<html><body><h1>Hello from test index.jsp</h1></body></html>' > $CATALINA_HOME/test-assets/index.jsp
 
-# ✅ Replace the default entrypoint to move the test file after unpacking
-CMD cp /tmp/lasu-test/index.jsp $CATALINA_HOME/webapps/ROOT/index.jsp && \
+# ✅ At runtime, move the test file to ROOT folder after unpacking
+CMD cp $CATALINA_HOME/test-assets/index.jsp $CATALINA_HOME/webapps/ROOT/index.jsp && \
     catalina.sh run
 
 # Expose default Tomcat port
 EXPOSE 8080
+
 
 
 
