@@ -3,12 +3,12 @@ services:
     name: lasu-web
     env: docker
     plan: free
-    dockerfilePath: dspace-jspui/Dockerfile  # Correct path
+    dockerfilePath: dspace-jspui/Dockerfile  # Correct path to your Dockerfile
     autoDeploy: true
     healthCheckPath: /
     envVars:
       - key: PORT
-        value: "8080"
+        value: "8080"  # Default value, Render will override this dynamically
     healthCheckProtocol: HTTP
     healthCheckIntervalSeconds: 30
     healthCheckTimeoutSeconds: 5
