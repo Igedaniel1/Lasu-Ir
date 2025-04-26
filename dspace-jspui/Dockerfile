@@ -18,7 +18,7 @@ RUN sed -i 's/address="127.0.0.1"/address="0.0.0.0"/' $CATALINA_HOME/conf/server
 RUN sed -i 's/port="8080"/port="${PORT}"/' $CATALINA_HOME/conf/server.xml
 
 # Expose the dynamic port
-EXPOSE $PORT
+EXPOSE 8080
 
 # Add a simple index.jsp to confirm the root URL responds
 RUN mkdir -p /usr/local/tomcat/webapps/ROOT && \
