@@ -7,6 +7,9 @@ ENV FILE_NAME=ROOT.war
 RUN apt-get update && apt-get install -y wget && \
     wget -O $CATALINA_HOME/webapps/$FILE_NAME "$FILE_URL"
 
+# Disable WAR unpacking to avoid write errors
+RUN sed -i 's/unpackWARs="true"/unpackWARs="false"/' $CATALINA_HOME/conf/server.xml
+
 EXPOSE 8080
 
 
