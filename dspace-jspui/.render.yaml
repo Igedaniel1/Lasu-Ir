@@ -6,14 +6,14 @@ services:
     dockerfilePath: dspace-jspui/Dockerfile
     autoDeploy: true
     healthCheckPath: /
-    envVars:
-      - key: PORT
-        value: "8080"  # Not strictly necessary, but okay to leave
     healthCheckProtocol: HTTP
     healthCheckIntervalSeconds: 30
-    healthCheckTimeoutSeconds: 5
-    healthCheckRetries: 3
-    healthCheckGracePeriodSeconds: 300
+    healthCheckTimeoutSeconds: 30  # Increased timeout for startup
+    healthCheckRetries: 5  # Increased retries
+    healthCheckGracePeriodSeconds: 300  # Longer grace period to wait for Tomcat to be ready
+    envVars:
+      - key: PORT
+        value: "8080"
 
 
 
