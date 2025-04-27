@@ -1,0 +1,9 @@
+app = "lasu-ir"  # Your app name on Fly.io
+
+[build]
+image = "maven:3.6.3-jdk-11"  # Docker image for building the app
+
+[[services]]
+internal_port = 8080
+external_port = 80
+protocol = "http"
