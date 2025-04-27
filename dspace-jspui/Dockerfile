@@ -1,15 +1,15 @@
-# Use an openjdk base image to build and run DSpace
+# Use openjdk as the base image
 FROM openjdk:11-jdk-slim
 
-# Set the working directory
+# Set working directory in the container
 WORKDIR /app
 
-# Download the DSpace WAR file from Dropbox
-RUN curl -L "https://www.dropbox.com/scl/fi/xkavtxiui7ch97s76xcss/lasu.war?rlkey=k6o3yodob5md97dduyue8okiu&st=cyfwhm7t&dl=1" -o /app/lasu.war
+# Download the WAR file from Dropbox
+RUN apt-get update && apt-get install -y curl \
+    && curl -L https://www.dropbox.com/scl/fi/xkavtxiui7ch97s76xcss/lasu.war?rlkey=k6o3yodob5md97dduyue8okiu&st=cyfwhm7t&dl=1 -o lasu.war
 
-# Expose the default port (8080 for DSpace)
+# Expose port 8080 for the application
 EXPOSE 8080
 
-# Command to run the WAR file using Java
+# Command to run the WAR file
 CMD ["java", "-jar", "lasu.war"]
-
